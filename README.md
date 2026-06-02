@@ -1,27 +1,73 @@
 # MedFinderAdmin
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.9.
+> **Concept project — not currently active.** A Firebase backend is required to run this app. See [Firebase Setup](#firebase-setup) below.
 
-## Development server
+MedFinderAdmin is an Angular web application that provides administrative access to the MedFinder platform. It is the backend management companion to [MedFinder](https://github.com/khatan498/MedFinder), an Android app that allows patients to search for doctors and book appointments.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Healthcare organizations use this admin panel to manage their data on the platform — adding and updating hospitals, departments, and doctor profiles, and overseeing patient appointments across their organization.
 
-## Code scaffolding
+## Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Secure admin login with role-based access control
+- Manage hospitals and their associated departments
+- Add, edit, and remove doctor profiles including schedules and availability
+- View and manage upcoming appointments across all providers
+- Review and update past appointment records
+- Manage user accounts registered on the platform
+- Admin account settings
 
-## Build
+## Tech Stack
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Framework:** Angular 18
+- **UI:** Angular Material
+- **Backend:** Firebase — Realtime Database, Authentication, Storage, Cloud Functions, Hosting
 
-## Running unit tests
+## Firebase Setup
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+This app requires a Firebase project with several services enabled. Before running:
 
-## Running end-to-end tests
+1. Create a project at [console.firebase.google.com](https://console.firebase.google.com)
+2. Enable **Authentication**, **Realtime Database**, **Storage**, and **Functions**
+3. Copy the config template and fill in your project's values:
+    ```sh
+    cp src/environments/firebase-config.template.ts src/environments/firebase-config.ts
+    ```
+4. Find the required values in Firebase Console → Project Settings → Your apps → SDK setup and configuration
+5. Run `firebase login` then `firebase init` and associate the project with your Firebase project
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Local Development
 
-## Further help
+Install dependencies:
+```sh
+npm install
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Start the development server:
+```sh
+ng serve
+```
+
+Navigate to `http://localhost:4200/`. The app reloads automatically on source changes.
+
+Build for production:
+```sh
+ng build
+```
+
+Deploy to Firebase Hosting:
+```sh
+firebase deploy
+```
+
+## Project Structure
+
+- `src/app/components/` — Page and dialog components
+- `src/app/services/` — Firebase data access and authentication services
+- `src/app/models/` — TypeScript data models
+- `src/app/guards/` — Route guards for role-based access control
+- `src/environments/` — Environment config (firebase-config.ts is gitignored; use the provided template)
+- `functions/` — Firebase Cloud Functions
+
+## License
+
+This project is licensed under the MIT License.
