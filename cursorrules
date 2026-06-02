@@ -1,0 +1,22 @@
+# MedFinderAdmin Cursor Rules
+
+## Stack
+Angular 18 standalone components, Angular Material, AngularFire, Firebase. TypeScript strict mode.
+
+## Firebase Access
+- All Firebase calls must go through a service in `src/app/services/` — never in a component
+- Follow the naming pattern `*-data-access.service.ts` for new data services
+- Privileged Auth operations (create/update/delete Firebase Auth users) must go in Cloud Functions, not the client
+
+## Components
+- All components are standalone — use `imports: []` in the decorator, no NgModules
+- Create/edit UI always uses Angular Material MatDialog with a dedicated `edit-*-dialog` component
+- Wrap async operations with `LoadingService.show()` / `LoadingService.hide()`
+
+## TypeScript
+- Strict mode is on — no implicit `any`, always type parameters and return values
+- Use interfaces from `src/app/models/` for all Firebase data shapes
+
+## Sensitive Files
+- `src/environments/firebase-config.ts` is gitignored — never suggest committing it
+- Reference `firebase-config.template.ts` for the expected object shape
