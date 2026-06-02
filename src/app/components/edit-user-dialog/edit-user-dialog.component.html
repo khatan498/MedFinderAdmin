@@ -1,0 +1,105 @@
+<div class="dialog-container">
+    <h1 mat-dialog-title>{{ isNew ? 'Add User' : 'Edit User' }}</h1>
+    <div mat-dialog-content>
+        <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+
+            <!-- Profile Photo Section (Only for existing users) -->
+            <div class="profile-photo-section" *ngIf="!isNew">
+                <ng-container *ngIf="previewUrl; else placeholder">
+                    <img [src]="previewUrl" alt="Profile Photo" class="profile-photo" />
+                </ng-container>
+                <ng-template #placeholder>
+                    <mat-icon class="profile-placeholder">account_circle</mat-icon>
+                </ng-template>
+                <div class="photo-buttons">
+                    <button mat-raised-button color="primary" type="button" (click)="uploadPhoto()">Upload</button>
+                    <button mat-raised-button type="button" (click)="clearPhoto()" [disabled]="!previewUrl">Clear
+                        Photo</button>
+                    <input type="file" accept="image/*" #fileInput class="hidden-file-input"
+                        title="Upload Profile Photo" (change)="onFileSelected($event)" />
+                </div>
+            </div>
+
+            <mat-form-field *ngIf="isSystemAdmin && !isNew">
+                <mat-label>User ID</mat-label>
+                <input matInput formControlName="id" placeholder="User ID" />
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" type="email" placeholder="Email"
+                [matTooltip]="functionsDisabled ? 'Auth functions are disabled' : null"
+                required />
+                <mat-error *ngIf="editUserForm.get('email')?.hasError('required')">
+                    Email is required
+                </mat-error>
+                <mat-error *ngIf="editUserForm.get('email')?.hasError('email')">
+                    Please enter a valid email
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="firstName" placeholder="First Name" required />
+                <mat-error *ngIf="editUserForm.get('firstName')?.hasError('required')">
+                    First Name is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="lastName" placeholder="Last Name" required />
+                <mat-error *ngIf="editUserForm.get('lastName')?.hasError('required')">
+                    Last Name is required
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Phone Number</mat-label>
+                <input matInput formControlName="phoneNumber" placeholder="Phone Number" />
+                <mat-error *ngIf="editUserForm.get('phoneNumber')?.hasError('pattern')">
+                    Phone number format is invalid
+                </mat-error>
+            </mat-form-field>
+
+            <label>Gender</label>
+            <mat-radio-group formControlName="gender">
+                <mat-radio-button color="primary" value="m">Male</mat-radio-button>
+                <mat-radio-button color="primary" value="f">Female</mat-radio-button>
+                <mat-radio-button color="primary" value="o">Other</mat-radio-button>
+            </mat-radio-group>
+            <mat-error *ngIf="editUserForm.get('gender')?.hasError('required')">
+                Gender is required
+            </mat-error>
+
+            <label>Role</label>
+            <mat-radio-group formControlName="role">
+                <mat-radio-button color="primary" value="patient">Patient</mat-radio-button>
+                <mat-radio-button color="primary" value="hospitalAdmin">Hospital Admin</mat-radio-button>
+                <mat-radio-button color="primary" value="systemAdmin">System Admin</mat-radio-button>
+            </mat-radio-group>
+            <mat-error *ngIf="editUserForm.get('role')?.hasError('required')">
+                Role is required
+            </mat-error>
+
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'"
+                    [matTooltip]="functionsDisabled ? 'Auth functions are disabled' : null"
+                    [required]="isNew" placeholder="Password" />
+                <mat-icon matSuffix (click)="isPasswordVisible = !isPasswordVisible">
+                    {{isPasswordVisible ? 'visibility' : 'visibility_off'}}
+                </mat-icon>
+                <mat-error *ngIf="editUserForm.get('password')?.hasError('required')">
+                    Password is required
+                </mat-error>
+            </mat-form-field>
+
+            <div class="button-group">
+                <button mat-raised-button color="primary" type="submit" [disabled]="editUserForm.invalid">{{ isNew ?
+                    'Add' : 'Save' }}</button>
+                <button mat-raised-button type="button" (click)="onCancel()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
